@@ -113,31 +113,6 @@ class Graph:
             return key
         return False
 
-    def get_conn_nodes(self, node_id, direction, depth=1, ignore_value=None):
-        result = []
-        if depth < 1:
-            return result
-        if depth > 3:
-            depth = 3
-        if direction in ['in', 'incoming']:
-            list_edges = self.inc_edges
-            pair_node = self.head
-        else:
-            list_edges = self.out_edges
-            pair_node = self.tail
-        value = ignore_value if ignore_value else self.get_node_id(node_id)
-
-        for e in list_edges(node_id):
-            n = pair_node(e)
-            v = self.get_node_id(n)
-            if v == value:
-                continue
-            result.append(v)
-            deep = self.get_conn_nodes(n, direction, depth-1, value)
-            if deep:
-                result.append(deep)
-        return result
-
     def has_edge_id(self, edge_id):
         """
         Returns True if the edge ID is in the graph
@@ -182,13 +157,13 @@ class Graph:
         """
         Return a list of the node ids for all nodes in the graph
         """
-        return list(self._nodes.keys())
+        return set(self._nodes.keys())
 
     def edge_list(self):
         """
         Returns an iterator for all nodes in the graph
         """
-        return list(self._edges.keys())
+        return set(self._edges.keys())
 
     def head(self, edge_id):
         """
