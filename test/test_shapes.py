@@ -6,10 +6,11 @@ sys.path.insert(1, os.getcwd())
 from graphh import *
 from graphh.generators.geometric import *
 
+
 class TestLocal(unittest.TestCase):
 
     def test_triangle(self):
-        g = generate_polygon(3)
+        g = generate_polygon_gr(3)
 
         # Points
         a = g.add_node('a')
@@ -24,7 +25,7 @@ class TestLocal(unittest.TestCase):
 
 
     def test_square(self):
-        g = generate_polygon(4)
+        g = generate_polygon_gr(4)
 
         # Points
         a = g.add_node('a')
@@ -40,7 +41,7 @@ class TestLocal(unittest.TestCase):
 
 
     def test_pentagon(self):
-        g = generate_polygon(5)
+        g = generate_polygon_gr(5)
 
         # Points
         a = g.add_node('a')
@@ -54,5 +55,13 @@ class TestLocal(unittest.TestCase):
         self.assertEqual(g.number_of_edges(), 5)
 
         self.assertEqual(g.node_list(), set([a, b, c, d, e]))
+
+
+    def test_line(self):
+        g = generate_line_gr(100)
+        self.assertEqual(len(g), 100)
+        self.assertEqual(g.number_of_nodes(), 100)
+        self.assertEqual(g.number_of_edges(), 99)
+
 
 # The end

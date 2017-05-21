@@ -9,6 +9,6 @@ def hash(*data):
         elif isinstance(d, str):
             d = d.encode('utf8')
         elif isinstance(d, (int, float)):
-            d = bytes(str(d).encode())
+            d = bytes(str(d).encode('utf8'))
         key.update(d)
     return key.digest()
