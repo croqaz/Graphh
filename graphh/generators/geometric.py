@@ -9,7 +9,7 @@ def generate_line_gr(size):
     There is no size limit.
     """
     if size < 2:
-        raise Error('The size must be a number larger than 2')
+        raise Exception('The size must be a number larger than 2')
 
     g = Graph()
     nodes = []
@@ -38,9 +38,9 @@ def generate_polygon_gr(size):
     Etc..
     """
     if size <= 2:
-        raise Error('The size must be a number larger than 3')
+        raise Exception('The size must be a number larger than 3')
     if size > 26:
-        raise Error('The size must be a number smaller than 26')
+        raise Exception('The size must be a number smaller than 26')
 
     g = Graph()
     nodes = []

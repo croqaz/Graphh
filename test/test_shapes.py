@@ -1,7 +1,6 @@
 
 import os, sys
 import unittest
-from path import Path
 sys.path.insert(1, os.getcwd())
 from graphh import *
 from graphh.generators.geometric import *

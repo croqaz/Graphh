@@ -39,7 +39,7 @@ class Graph:
         """
         Adds a new node to the graph.
         The node must be a hashable value.
-        Adding the same node twice will be silently ignored.
+        Adding the same node data twice will be silently ignored.
         """
         key = hash(node_data)
         # index 0 -> incoming edges
@@ -155,13 +155,13 @@ class Graph:
 
     def node_list(self):
         """
-        Return a list of the node ids for all nodes in the graph
+        Return a set with all node ids in the graph
         """
         return set(self._nodes.keys())
 
     def edge_list(self):
         """
-        Returns an iterator for all nodes in the graph
+        Return a set with all edge ids in the graph
         """
         return set(self._edges.keys())
 

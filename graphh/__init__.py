@@ -1,1 +1,1 @@
-from .graph import Graph
+from .graph import Graph # flake8: noqa

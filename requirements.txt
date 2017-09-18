@@ -1,0 +1,15 @@
+
+# Dev lint code
+flake8
+
+# UJSON (optional)
+ujson
+
+# Or SimpleJson (optional)
+#simplejson
+
+# CBOR2 (optional)
+cbor2
+
+# Msgpack (optional)
+msgpack-python
