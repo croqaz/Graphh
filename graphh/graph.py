@@ -5,6 +5,15 @@ from .util import hash
 class Graph:
     """
     Directed graph engine.
+    All iterations are lazy.
+
+    Possible props:
+      * nodes
+      * edges
+      * triples
+      * chains
+      * meta
+      * indexes
     """
 
     def __init__(self):
