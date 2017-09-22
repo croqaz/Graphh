@@ -102,3 +102,7 @@ ENV/
 
 # Mac OS cache
 .DS_Store
+
+# DB files
+*.lvl/
+*.lmdb/

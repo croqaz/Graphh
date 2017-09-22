@@ -3,7 +3,7 @@ import os, sys
 import unittest
 sys.path.insert(1, os.getcwd())
 from graphh import *
-from graphh.generators.geometric import *
+from graphh.generators import *
 
 
 class TestLocal(unittest.TestCase):

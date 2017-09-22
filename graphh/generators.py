@@ -140,9 +140,9 @@ def gen_ladder_gr(height):
     # Adding edges
     for i in range(gr_height):
         if i % 2:
-            g.add_edge(nodes[i-1], nodes[i])
+            g.add_edge(nodes[i - 1], nodes[i])
     for i in range(0, (gr_height - 2)):
-        g.add_edge(nodes[i], nodes[i+2])
+        g.add_edge(nodes[i], nodes[i + 2])
 
     # Basic validation
     assert g.number_of_nodes() == gr_height
