@@ -22,6 +22,8 @@ class TestLocal(unittest.TestCase):
         x = Graph()
         cbor.import_cbor(x, pth)
 
+        self.assertEqual(g.number_of_nodes(), x.number_of_nodes())
+
         self.assertEqual(g.node_list(), x.node_list())
         self.assertEqual(g.edge_list(), x.edge_list())
 
@@ -40,6 +42,8 @@ class TestLocal(unittest.TestCase):
 
         x = Graph()
         msgpack.import_msgpack(x, pth)
+
+        self.assertEqual(g.number_of_nodes(), x.number_of_nodes())
 
         self.assertEqual(g.node_list(), x.node_list())
         self.assertEqual(g.edge_list(), x.edge_list())

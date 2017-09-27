@@ -5,7 +5,6 @@ from .util import hash
 class Graph:
     """
     Directed graph engine.
-    All iterations are lazy.
 
     Possible props:
       * nodes
@@ -18,21 +17,20 @@ class Graph:
 
     def __init__(self):
         # The nodes are stored as:
-        # Key -> (incoming-adjacency-list, outgoing-adjacency-list, value)
+        # Key -> Value
         self._nodes = {}
+        # Indexed (incoming-adjacency-list, outgoing-adjacency-list)
+        self._adjacency = {}
         # The edges are stored as:
         # Key -> (node_id, node_id)
         self._edges = {}
+
 
     def to_dict(self):
         """
         Represent instance as Python dictionary.
         """
-        out = {'n': {}, 'e': self._edges}
-        for k, ion in self._nodes.items():
-            i, o, n = ion
-            out['n'][k] = [list(i), list(o), n]
-        return out
+        return {'n': self._nodes, 'e': self._edges}
 
     def from_dict(self, data):
         """
@@ -40,9 +38,10 @@ class Graph:
         This will OVERWRITE all existing nodes and all existing edges!
         """
         self._edges.update(data['e'])
-        for k, ion in data['n'].items():
-            i, o, n = ion
-            self._nodes[k] = [set(i), set(o), n]
+        self._nodes.update(data['n'])
+        # Restore the adjancency list
+        # for node in self._nodes:
+
 
     def add_node(self, node_data, safe=True):
         """
@@ -51,14 +50,15 @@ class Graph:
         Adding the same node data twice will be silently ignored.
         """
         key = hash(node_data)
-        # index 0 -> incoming edges
-        # index 1 -> outgoing edges
         if key in self._nodes:
             if safe:
                 return key
             else:
                 return False
-        self._nodes[key] = (set(), set(), node_data)
+        # index 0 -> incoming edges
+        # index 1 -> outgoing edges
+        self._nodes[key] = node_data
+        self._adjacency[key] = (set(), set())
         return key
 
     def add_edge(self, head_id, tail_id, safe=True):
@@ -75,9 +75,9 @@ class Graph:
                     return False
             # index 0 -> incoming edges
             # index 1 -> outgoing edges
-            self._nodes[tail_id][0].add(key)
-            self._nodes[head_id][1].add(key)
             self._edges[key] = (head_id, tail_id)
+            self._adjacency[tail_id][0].add(key)
+            self._adjacency[head_id][1].add(key)
             return key
         return False
 
@@ -95,11 +95,11 @@ class Graph:
         """
         return iter(self._nodes)
 
-    def __contains__(self, node):
+    def __contains__(self, node_id):
         """
         Test whether a node is in the graph
         """
-        return node in self._nodes
+        return node_id in self._nodes
 
     def __len__(self):
         """
@@ -111,13 +111,13 @@ class Graph:
         """
         Returns the node data from the graph
         """
-        return self._nodes.get(node_id, [False, False, False])[-1]
+        return self._nodes.get(node_id, False)
 
-    def get_node(self, data):
+    def get_node(self, node_data):
         """
         Returns the node ID from the graph
         """
-        key = hash(data)
+        key = hash(node_data)
         if key in self._nodes:
             return key
         return False
@@ -174,13 +174,13 @@ class Graph:
         """
         return set(self._edges.keys())
 
-    def head(self, edge_id):
+    def edge_head(self, edge_id):
         """
         Returns the node of the head of the edge ID
         """
         return self._edges[edge_id][0]
 
-    def tail(self, edge_id):
+    def edge_tail(self, edge_id):
         """
         Returns node of the tail of the edge ID
         """
@@ -190,13 +190,13 @@ class Graph:
         """
         Returns a list of the outgoing edges
         """
-        return list(self._nodes[node_id][1])
+        return list(self._adjacency[node_id][1])
 
     def inc_edges(self, node_id):
         """
         Returns a list of the incoming edges
         """
-        return list(self._nodes[node_id][0])
+        return list(self._adjacency[node_id][0])
 
     def all_edges(self, node_id):
         """
@@ -208,13 +208,15 @@ class Graph:
         """
         Returns the number of outgoing edges
         """
-        return len(self.out_edges(node_id))
+        out_edges = self._adjacency[node_id][1]
+        return len(out_edges)
 
     def inc_degree(self, node_id):
         """
         Returns the number of incoming edges
         """
-        return len(self.inc_edges(node_id))
+        inc_edges = self._adjacency[node_id][0]
+        return len(inc_edges)
 
     def all_degree(self, node_id):
         """
