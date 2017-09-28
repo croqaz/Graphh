@@ -34,6 +34,7 @@ def generate_star_gr(size):
     """
     Generate a star graph.
     The size represents the number of edges.
+    https://en.wikipedia.org/wiki/Star_%28graph_theory%29
     """
     if size <= 1:
         raise Exception('The size must be a number larger than 2')
