@@ -122,12 +122,6 @@ class Graph(Events):
         self.add_edge(tail_id, head_id)
 
 
-    def __iter__(self):
-        """
-        Iterates over all nodes in the graph
-        """
-        return iter(self._nodes)
-
     def __contains__(self, node_id):
         """
         Test whether a node is in the graph
@@ -198,6 +192,23 @@ class Graph(Events):
         Returns the number of edges
         """
         return len(self._edges)
+
+
+    def iter_nodes(self, values=True):
+        """
+        Iterates over all nodes in the graph
+        """
+        if values:
+            return self._nodes.items()
+        return iter(self._nodes)
+
+    def iter_edges(self, values=True):
+        """
+        Iterates over all edges in the graph
+        """
+        if values:
+            return self._edges.items()
+        return iter(self._edges)
 
 
     def node_list(self):

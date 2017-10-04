@@ -10,13 +10,13 @@ def export_csv(graph, nodes_file='g_nodes.csv', edges_file='g_edges.csv'):
     t1 = time.time()
     with open(nodes_file, 'w') as nfile:
         nfile.write('id,label\n')
-        for k, val in graph._nodes.items():
+        for k, val in graph.iter_nodes():
             hex = hexlify(k).decode('utf')
             nfile.write(f'{hex},{val}\n')
 
     with open(edges_file, 'w') as efile:
         efile.write('Source,Target\n')
-        for _, (head, tail) in graph._edges.items():
+        for _, (head, tail) in graph.iter_edges():
             head = hexlify(head).decode('utf')
             tail = hexlify(tail).decode('utf')
             efile.write(f'{head},{tail}\n')
