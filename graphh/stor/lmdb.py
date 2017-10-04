@@ -19,17 +19,13 @@ class LmdbStore:
     def close(self):
         self.db.close()
 
-    # def __getitem__(self, key):
-    #     with self.db.begin(db=self.table) as txn:
-    #         return txn.get(key)
+    def __getitem__(self, key):
+        with self.db.begin(db=self.table) as txn:
+            return txn.get(key)
 
     def get(self, key, replacement=None):
         with self.db.begin(db=self.table) as txn:
             return txn.get(key, replacement)
-
-    # def __setitem__(self, key, data):
-    #     with self.db.begin(write=True, db=self.table) as txn:
-    #         txn.put(key, data, dupdata=False, overwrite=True)
 
     def put(self, key, data, overwrite=False):
         with self.db.begin(write=True, db=self.table) as txn:

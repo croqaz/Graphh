@@ -1,54 +1,52 @@
 
 import os, sys
-import unittest
 sys.path.insert(1, os.getcwd())
-from graphh import *
-from graphh.generators import *
+
+from graphh import Graph
 from graphh.io import cbor, msgpack
+from graphh.generators import generate_polygon_gr
 
 
-class TestLocal(unittest.TestCase):
+def test_io_cbor():
+    """
+    Import-Export CBOR files
+    """
+    g = generate_polygon_gr(3)
 
-    def test_io_cbor(self):
-        """
-        Import-Export CBOR files
-        """
-        g = generate_polygon_gr(3)
+    pth = 'test/g.cb'
+    cbor.export_cbor(g, pth)
+    assert os.path.isfile(pth)
 
-        pth = 'test/g.cb'
-        cbor.export_cbor(g, pth)
-        assert os.path.isfile(pth)
+    x = Graph()
+    cbor.import_cbor(x, pth)
 
-        x = Graph()
-        cbor.import_cbor(x, pth)
+    assert g.number_of_nodes() == x.number_of_nodes()
 
-        self.assertEqual(g.number_of_nodes(), x.number_of_nodes())
+    assert g.node_list() == x.node_list()
+    assert g.edge_list() == x.edge_list()
 
-        self.assertEqual(g.node_list(), x.node_list())
-        self.assertEqual(g.edge_list(), x.edge_list())
-
-        os.remove(pth)
+    os.remove(pth)
 
 
-    def test_io_json(self):
-        """
-        Import-Export JSON files
-        """
-        g = generate_polygon_gr(4)
+def test_io_json():
+    """
+    Import-Export JSON files
+    """
+    g = generate_polygon_gr(4)
 
-        pth = 'test/g.mp'
-        msgpack.export_msgpack(g, pth)
-        assert os.path.isfile(pth)
+    pth = 'test/g.mp'
+    msgpack.export_msgpack(g, pth)
+    assert os.path.isfile(pth)
 
-        x = Graph()
-        msgpack.import_msgpack(x, pth)
+    x = Graph()
+    msgpack.import_msgpack(x, pth)
 
-        self.assertEqual(g.number_of_nodes(), x.number_of_nodes())
+    assert g.number_of_nodes() == x.number_of_nodes()
 
-        self.assertEqual(g.node_list(), x.node_list())
-        self.assertEqual(g.edge_list(), x.edge_list())
+    assert g.node_list() == x.node_list()
+    assert g.edge_list() == x.edge_list()
 
-        os.remove(pth)
+    os.remove(pth)
 
 
 # The end

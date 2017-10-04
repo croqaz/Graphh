@@ -16,14 +16,11 @@ class LevelStore:
     def close(self):
         self.db.close()
 
-    # def __getitem__(self, key):
-    #     return self.db.get(key)
+    def __getitem__(self, key):
+        return self.db.get(key)
 
     def get(self, key, replacement=None):
         return self.db.get(key, replacement)
-
-    # def __setitem__(self, key, data):
-    #     self.db.put(key, data)
 
     def put(self, key, data, overwrite=False):
         if not overwrite and self.db.get(key):
@@ -43,7 +40,7 @@ class LevelStore:
         """
         Iterates over all key -> values
         """
-        return iter(self.db)
+        return self.db.iterator(include_key=True, include_value=False)
 
     def __len__(self):
         """

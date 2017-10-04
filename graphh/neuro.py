@@ -47,22 +47,24 @@ class Neuro(Graph):
     def query_subject(self, predicate):
         """
         Find all subjects from a predicate.
+        Returns a generator.
         """
         pkey = hash(predicate)
         edges = self.inc_edges(pkey)
         if not edges:
             return False
-        return [self.get_node_id(self.edge_head(e)) for e in edges]
+        return (self.get_node_id(self.edge_head(e)) for e in edges)
 
     def query_thing(self, predicate):
         """
         Find all things from a predicate.
+        Returns a generator.
         """
         pkey = hash(predicate)
         edges = self.out_edges(pkey)
         if not edges:
             return False
-        return [self.get_node_id(self.edge_tail(e)) for e in edges]
+        return (self.get_node_id(self.edge_tail(e)) for e in edges)
 
 
     def query_triple(self, subject, predicate, thing):

@@ -249,14 +249,14 @@ class Graph(Events):
         """
         Returns the number of outgoing edges
         """
-        out_edges = self._adjacency[node_id][1]
+        out_edges = self._adjacency.get(node_id, (set(), set()))[1]
         return len(out_edges)
 
     def inc_degree(self, node_id):
         """
         Returns the number of incoming edges
         """
-        inc_edges = self._adjacency[node_id][0]
+        inc_edges = self._adjacency.get(node_id, (set(), set()))[0]
         return len(inc_edges)
 
     def all_degree(self, node_id):

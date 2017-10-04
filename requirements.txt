@@ -1,15 +1,20 @@
 
 # Dev lint code
 flake8
+# Dev test code
+pytest
 
 # UJSON (optional)
 ujson
-
-# Or SimpleJson (optional)
-#simplejson
 
 # CBOR2 (optional)
 cbor2
 
 # Msgpack (optional)
 msgpack-python
+
+# LevelDB (optional)
+plyvel
+
+# LMDB (optional)
+lmdb
