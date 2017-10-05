@@ -56,6 +56,16 @@ def test_countries():
     # print('How many capitals ::', len(capitals))
     assert capitals == set(n['capital'] for n in COUNTRIES)
 
+    countries = set(g.query_thing('official_name', 'U', '<'))
+    # print('R countries:', countries)
+    assert countries == set(n['name']['official'] for n in COUNTRIES \
+        if n['name']['official'][0] == 'U')
+
+    countries = set(g.query_thing('official_name', 'a', '>'))
+    # print('A countries:', countries)
+    assert countries == set(n['name']['official'] for n in COUNTRIES \
+        if n['name']['official'][-1] == 'a')
+
     info = {k: v for _, k, v in g.query_triple('RO', '?', '?')}
     # print('What info about Romania ::', info)
     assert info[b'common_name'] == 'Romania'

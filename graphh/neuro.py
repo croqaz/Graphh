@@ -3,6 +3,17 @@ from .graph import Graph
 from .util import hash
 
 
+def create_matcher(part, where):
+    # Starts with
+    if where == '<':
+        return lambda t: t.startswith(part)
+    # Ends with
+    if where == '>':
+        return lambda t: t.endswith(part)
+    # Contains
+    return lambda t: part in t
+
+
 class Neuro(Graph):
     """
     Neuro[n] engine.
@@ -44,27 +55,47 @@ class Neuro(Graph):
         return key
 
 
-    def query_subject(self, predicate):
+    def query_subject(self, predicate, match='', where=''):
         """
-        Find all subjects from a predicate.
+        Find subjects connected to a predicate.
         Returns a generator.
         """
         pkey = hash(predicate)
         edges = self.inc_edges(pkey)
         if not edges:
             return False
-        return (self.get_node_id(self.edge_head(e)) for e in edges)
+        if not match:
+            # Just return all subjects
+            for e in edges:
+                yield self.get_node_id(self.edge_head(e))
+        else:
+            # Match some subjects
+            matches = create_matcher(match, where)
+            for e in edges:
+                t = self.get_node_id(self.edge_head(e))
+                if matches(t):
+                    yield t
 
-    def query_thing(self, predicate):
+    def query_thing(self, predicate, match='', where=''):
         """
-        Find all things from a predicate.
+        Find things connected to a predicate.
         Returns a generator.
         """
         pkey = hash(predicate)
         edges = self.out_edges(pkey)
         if not edges:
             return False
-        return (self.get_node_id(self.edge_tail(e)) for e in edges)
+        if not match:
+            # Just return all things
+            for e in edges:
+                yield self.get_node_id(self.edge_tail(e))
+        else:
+            # Match some things
+            matches = create_matcher(match, where)
+            for e in edges:
+                t = self.get_node_id(self.edge_tail(e))
+                if matches(t):
+                    yield t
 
 
     def query_triple(self, subject, predicate, thing):
