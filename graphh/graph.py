@@ -45,9 +45,9 @@ class Graph(Events):
 
     def to_dict(self):
         """
-        Represent instance as Python dictionary.
+        Represent instance as Python dictionaries, ready for serialization.
         """
-        return {'n': self._nodes, 'e': self._edges}
+        return {'n': dict(self._nodes), 'e': dict(self._edges)}
 
     def from_dict(self, data):
         """

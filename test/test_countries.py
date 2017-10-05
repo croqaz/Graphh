@@ -3,7 +3,7 @@ import os, sys
 sys.path.insert(1, os.getcwd())
 
 from json import load
-from graphh import Neuro
+from graphh import FsConvention
 
 COUNTRIES = load(open('test/data/countries.json'))
 
@@ -17,15 +17,17 @@ def iter_countries():
           b'capital': item['capital'],
           b'region': item['region'],
           b'sub_region': item['subregion'],
-          b'cca2': item['cca2'],
           b'cca3': item['cca3'],
           b'ccn3': item['ccn3'],
           b'cioc': item['cioc'],
           b'area_size': item['area'],
-        #   b'currencies': item['currency'],
-        #   b'languages': item['languages'],
-        #   b'borders': item['borders'],
+          b'borders': item['borders'],
+          b'currencies': item['currency'],
+          b'languages': sorted(item['languages'].values())
         }
+        if item.get('latlng'):
+            data['latitude'] = item['latlng'][0]
+            data['longitude'] = item['latlng'][1]
         yield id, data
 
 
@@ -34,11 +36,11 @@ def test_countries():
     Countries and borders
     https://github.com/mledoze/countries
     """
-    g = Neuro()
+    g = FsConvention('Geography')
+    g.create_table('countries')
 
-    for id, c in iter_countries():
-        for predicate, thing in c.items():
-            g.add_triple(id, predicate, thing)
+    for id, data in iter_countries():
+        g.create_doc('countries', id, data)
 
     regions = sorted(n for n in g.query_thing('region') if n)
     # print('What are the regions ::', regions)
@@ -66,7 +68,7 @@ def test_countries():
     assert countries == set(n['name']['official'] for n in COUNTRIES \
         if n['name']['official'][-1] == 'a')
 
-    info = {k: v for _, k, v in g.query_triple('RO', '?', '?')}
+    info = g.get_doc('countries', 'RO')
     # print('What info about Romania ::', info)
     assert info[b'common_name'] == 'Romania'
     assert info[b'capital'] == 'Bucharest'

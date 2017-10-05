@@ -31,10 +31,10 @@ class Neuro(Graph):
         Represent instance as Python dictionary.
         """
         out = super().to_dict()
-        out.update({'t': self._triples})
+        out.update({'t': dict(self._triples)})
         return out
 
-    def from_dict(self, data):
+    def from_dict(self, data: dict):
         """
         Load instance from Python dictionary.
         This will OVERWRITE all existing triples and all existing quads!
@@ -43,7 +43,14 @@ class Neuro(Graph):
         self._triples.update(data['t'])
 
 
-    def add_triple(self, subject, predicate, thing):
+    def add_triple(self, subject: str, predicate: str, thing: str):
+        """
+        Create a (Subject -> Predicate -> Thing) relation.
+        Examples:
+        * RO -> official_name -> Romania
+        * RO -> capital -> Bucharest
+        * RO -> area_size -> 238391
+        """
         k1 = self.add_node(subject)
         k2 = self.add_node(predicate)
         k3 = self.add_node(thing)
@@ -55,7 +62,7 @@ class Neuro(Graph):
         return key
 
 
-    def query_subject(self, predicate, match='', where=''):
+    def query_subject(self, predicate: str, match='', where=''):
         """
         Find subjects connected to a predicate.
         Returns a generator.
@@ -76,7 +83,7 @@ class Neuro(Graph):
                 if matches(t):
                     yield t
 
-    def query_thing(self, predicate, match='', where=''):
+    def query_thing(self, predicate: str, match='', where=''):
         """
         Find things connected to a predicate.
         Returns a generator.
@@ -98,7 +105,7 @@ class Neuro(Graph):
                     yield t
 
 
-    def query_triple(self, subject, predicate, thing):
+    def query_triple(self, subject: str, predicate: str, thing: str):
         """
         Query for subject, predicate, or thing.
         And for any variation.
