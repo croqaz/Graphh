@@ -1,5 +1,5 @@
 
-import os, sys
+import os, sys # noqa: E401
 sys.path.insert(1, os.getcwd())
 from graphh import Neuro
 
@@ -7,7 +7,8 @@ MIN_NR = 10_000
 MAX_NR = 30_000
 
 
-is_odd = lambda x: x % 2
+def is_odd(x):
+    return x % 2
 
 def is_prime(a):
     return not (a < 2 or any(a % x == 0 for x in range(2, int(a**0.5) + 1)))

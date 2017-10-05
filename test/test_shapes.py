@@ -1,93 +1,91 @@
 
-import os, sys
-import unittest
+import os, sys # noqa: E401
 sys.path.insert(1, os.getcwd())
-from graphh import *
-from graphh.generators import *
+
+from graphh.generators import generate_line_gr
+from graphh.generators import generate_polygon_gr
 
 
-class TestLocal(unittest.TestCase):
+def test_triangle():
+    g = generate_polygon_gr(3)
 
-    def test_triangle(self):
-        g = generate_polygon_gr(3)
+    # Points
+    a = g.add_node('a')
+    b = g.add_node('b')
+    c = g.add_node('c')
 
-        # Points
-        a = g.add_node('a')
-        b = g.add_node('b')
-        c = g.add_node('c')
+    points = {a: 'a', b: 'b', c: 'c'}
 
-        points = {a: 'a', b: 'b', c: 'c'}
+    for k, v in points.items():
+        assert g.get_node_id(k) == v
+        assert g.out_degree(k) == 1
+        assert g.inc_degree(k) == 1
+        assert g.all_degree(k) == 2
 
-        for k, v in points.items():
-            self.assertEqual(g.get_node_id(k), v)
-            self.assertEqual(g.out_degree(k), 1)
-            self.assertEqual(g.inc_degree(k), 1)
-            self.assertEqual(g.all_degree(k), 2)
+    assert g.has_edge(a, b)
+    assert g.has_edge(c, a)
 
-        self.assertTrue(g.has_edge(a, b))
-        self.assertTrue(g.has_edge(c, a))
+    assert g.out_edges(a) == set([g.get_edge(a, b)])
+    assert g.inc_edges(a) == set([g.get_edge(c, a)])
 
-        self.assertListEqual(g.out_edges(a), [g.get_edge(a, b)])
-        self.assertListEqual(g.inc_edges(a), [g.get_edge(c, a)])
+    assert len(g) == 3
+    assert g.number_of_nodes() == 3
+    assert g.number_of_edges() == 3
 
-        self.assertEqual(len(g), 3)
-        self.assertEqual(g.number_of_nodes(), 3)
-        self.assertEqual(g.number_of_edges(), 3)
-
-        self.assertEqual(g.node_list(), set([a, b, c]))
+    assert g.node_list() == [a, b, c]
 
 
-    def test_square(self):
-        g = generate_polygon_gr(4)
+def test_square():
+    g = generate_polygon_gr(4)
 
-        # Points
-        a = g.add_node('a')
-        b = g.add_node('b')
-        c = g.add_node('c')
-        d = g.add_node('d')
+    # Points
+    a = g.add_node('a')
+    b = g.add_node('b')
+    c = g.add_node('c')
+    d = g.add_node('d')
 
-        points = {a: 'a', b: 'b', c: 'c', d: 'd'}
+    points = {a: 'a', b: 'b', c: 'c', d: 'd'}
 
-        for k, v in points.items():
-            self.assertEqual(g.get_node_id(k), v)
-            self.assertEqual(g.out_degree(k), 1)
-            self.assertEqual(g.inc_degree(k), 1)
-            self.assertEqual(g.all_degree(k), 2)
+    for k, v in points.items():
+        assert g.get_node_id(k) == v
+        assert g.out_degree(k) == 1
+        assert g.inc_degree(k) == 1
+        assert g.all_degree(k) == 2
 
-        self.assertTrue(g.has_edge(a, b))
-        self.assertTrue(g.has_edge(b, c))
+    assert g.has_edge(a, b)
+    assert g.has_edge(b, c)
 
-        self.assertEqual(len(g), 4)
-        self.assertEqual(g.number_of_nodes(), 4)
-        self.assertEqual(g.number_of_edges(), 4)
+    assert len(g) == 4
+    assert g.number_of_nodes() == 4
+    assert g.number_of_edges() == 4
 
-        self.assertEqual(g.node_list(), set([a, b, c, d]))
-
-
-    def test_pentagon(self):
-        g = generate_polygon_gr(5)
-
-        # Points
-        a = g.add_node('a')
-        b = g.add_node('b')
-        c = g.add_node('c')
-        d = g.add_node('d')
-        e = g.add_node('e')
-
-        points = set([a, b, c, d, e])
-
-        self.assertEqual(len(g), len(points))
-        self.assertEqual(g.number_of_nodes(), len(points))
-        self.assertEqual(g.number_of_edges(), len(points))
-
-        self.assertEqual(g.node_list(), points)
+    assert g.node_list() == [a, b, c, d]
 
 
-    def test_line(self):
-        g = generate_line_gr(100)
-        self.assertEqual(len(g), 100)
-        self.assertEqual(g.number_of_nodes(), 100)
-        self.assertEqual(g.number_of_edges(), 99)
+def test_pentagon():
+    g = generate_polygon_gr(5)
+
+    # Points
+    a = g.add_node('a')
+    b = g.add_node('b')
+    c = g.add_node('c')
+    d = g.add_node('d')
+    e = g.add_node('e')
+
+    points = [a, b, c, d, e]
+
+    assert len(g) == len(points)
+    assert g.number_of_nodes() == len(points)
+    assert g.number_of_edges() == len(points)
+
+    assert g.node_list() == points
+
+
+def test_line():
+    g = generate_line_gr(100)
+    assert len(g) == 100
+    assert g.number_of_nodes() == 100
+    assert g.number_of_edges() == 99
 
 
 # The end

@@ -1,5 +1,5 @@
 
-import os, sys
+import os, sys # noqa: E401
 sys.path.insert(1, os.getcwd())
 
 from json import load
@@ -24,11 +24,11 @@ def test_family():
 
     g = Neuro()
 
-    mom = g.add_node('mom')
-    dad = g.add_node('dad')
-    girl = g.add_node('girl')
-    boy = g.add_node('boy')
-    cat = g.add_node('lazy cat')
+    g.add_node('mom')
+    g.add_node('dad')
+    g.add_node('girl')
+    g.add_node('boy')
+    g.add_node('lazy cat')
 
     # subject -> predicate -> thing
     g.add_triple('mom', 'loves', 'dad')

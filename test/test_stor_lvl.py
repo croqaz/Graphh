@@ -1,11 +1,12 @@
 
-import os, sys
+import os, sys # noqa: E401
 import shutil
 import unittest
 sys.path.insert(1, os.getcwd())
 from graphh.stor import leveldb
 
 DB = 'a'
+
 
 class TestDb(unittest.TestCase):
 

@@ -1,5 +1,5 @@
 
-import os, sys
+import os, sys # noqa: E401
 sys.path.insert(1, os.getcwd())
 
 from json import load

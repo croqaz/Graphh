@@ -1,5 +1,5 @@
 
-import os, sys
+import os, sys # noqa: E401
 sys.path.insert(1, os.getcwd())
 
 from json import load
@@ -60,12 +60,12 @@ def test_countries():
 
     countries = set(g.query_thing('official_name', 'U', '<'))
     # print('R countries:', countries)
-    assert countries == set(n['name']['official'] for n in COUNTRIES \
+    assert countries == set(n['name']['official'] for n in COUNTRIES
         if n['name']['official'][0] == 'U')
 
     countries = set(g.query_thing('official_name', 'a', '>'))
     # print('A countries:', countries)
-    assert countries == set(n['name']['official'] for n in COUNTRIES \
+    assert countries == set(n['name']['official'] for n in COUNTRIES
         if n['name']['official'][-1] == 'a')
 
     info = g.get_doc('countries', 'RO')

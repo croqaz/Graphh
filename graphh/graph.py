@@ -211,66 +211,66 @@ class Graph(Events):
         return iter(self._edges)
 
 
-    def node_list(self):
+    def node_list(self) -> list:
         """
-        Return a set with all node ids in the graph
+        Return a list with all node ids in the graph
         """
-        return set(self._nodes.keys())
+        return list(self._nodes.keys())
 
-    def edge_list(self):
+    def edge_list(self) -> list:
         """
-        Return a set with all edge ids in the graph
+        Return a list with all edge ids in the graph
         """
-        return set(self._edges.keys())
+        return list(self._edges.keys())
 
 
-    def edge_head(self, edge_id):
+    def edge_head(self, edge_id: bytes) -> bytes:
         """
         Returns the node of the head of the edge ID
         """
         return self._edges[edge_id][0]
 
-    def edge_tail(self, edge_id):
+    def edge_tail(self, edge_id: bytes) -> bytes:
         """
         Returns node of the tail of the edge ID
         """
         return self._edges[edge_id][1]
 
 
-    def out_edges(self, node_id):
+    def out_edges(self, node_id: bytes) -> set:
         """
-        Returns a list of the outgoing edges
+        Returns a set with the outgoing edges
         """
-        return list(self._adjacency[node_id][1])
+        return set(self._adjacency[node_id][1])
 
-    def inc_edges(self, node_id):
+    def inc_edges(self, node_id: bytes) -> set:
         """
-        Returns a list of the incoming edges
+        Returns a set with the incoming edges
         """
-        return list(self._adjacency[node_id][0])
+        return set(self._adjacency[node_id][0])
 
-    def all_edges(self, node_id):
+    def all_edges(self, node_id: bytes) -> set:
         """
-        Returns a list of incoming and outging edges from a node
+        Returns a set with incoming and outging edges from a node
         """
         return set(self.inc_edges(node_id) + self.out_edges(node_id))
 
 
-    def out_degree(self, node_id):
+    def out_degree(self, node_id: bytes) -> int:
         """
         Returns the number of outgoing edges
         """
         out_edges = self._adjacency.get(node_id, (set(), set()))[1]
         return len(out_edges)
 
-    def inc_degree(self, node_id):
+    def inc_degree(self, node_id: bytes) -> int:
         """
         Returns the number of incoming edges
         """
         inc_edges = self._adjacency.get(node_id, (set(), set()))[0]
         return len(inc_edges)
 
-    def all_degree(self, node_id):
+    def all_degree(self, node_id: bytes) -> int:
         """
         Returns the total degree of a node
         """

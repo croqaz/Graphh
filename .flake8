@@ -2,8 +2,8 @@
 ignore =
   # E121 continuation line under-indented for hanging indent
   E121,
-  # E241 multiple spaces after ':'
-  E241,
+  # E128 continuation line under-indented for visual indent
+  E128,
   # E261 at least two spaces before inline comment
   E261,
   # E302 expected 2 blank lines
