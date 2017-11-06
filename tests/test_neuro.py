@@ -5,10 +5,12 @@ sys.path.insert(1, os.getcwd())
 from json import load
 from graphh import Neuro
 
-words = load(open('tests/data/yes_no.json'))
-
 
 def test_triple():
+    """
+    Yes / No words
+    """
+    words = load(open('tests/data/yes_no.json'))
 
     g = Neuro()
 

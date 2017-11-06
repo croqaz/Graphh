@@ -4,14 +4,14 @@ sys.path.insert(1, os.getcwd())
 
 from graphh import Graph
 from graphh.io import cbor, msgpack, csv
-from graphh.generators import generate_polygon_gr
+from graphh.generators import gen_complete_gr
 
 
 def test_io_cbor():
     """
     Import-Export CBOR files
     """
-    g = generate_polygon_gr(3)
+    g = gen_complete_gr(9)
 
     pth = 'tests/g.cb'
     cbor.export_cbor(g, pth)
@@ -32,7 +32,7 @@ def test_io_mpack():
     """
     Import-Export MsgPack files
     """
-    g = generate_polygon_gr(4)
+    g = gen_complete_gr(8)
 
     pth = 'tests/g.mp'
     msgpack.export_msgpack(g, pth)
@@ -53,7 +53,7 @@ def test_io_csv():
     """
     Import-Export CSV files
     """
-    g = generate_polygon_gr(4)
+    g = gen_complete_gr(7)
 
     n_pth = 'tests/nodes.csv'
     e_pth = 'tests/edges.csv'

@@ -1,9 +1,14 @@
 
-#- rev: v1 -
-#- hash: O85TFF -
+#- rev: v2 -
+#- hash: UDQS3L -
 
 import itertools
 from .graph import Graph
+
+
+def number_to_letter(nr):
+    # `Number` must be a positive integer
+    return chr(nr + 96)
 
 
 def generate_line_gr(size):
@@ -52,7 +57,7 @@ def generate_star_gr(size):
 
     # Adding nodes as numbers
     for i in range(1, size + 1):
-        node = g.add_node(i)
+        node = g.add_node(number_to_letter(i))
         nodes.append(node)
     # Adding edges
     for n in nodes:
@@ -83,7 +88,7 @@ def generate_polygon_gr(size):
 
     # Adding nodes as letters
     for i in range(1, size + 1):
-        node = g.add_node(chr(i + 96))
+        node = g.add_node(number_to_letter(i))
         nodes.append(node)
     # Adding edges
     for i in range(len(nodes)):

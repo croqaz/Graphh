@@ -3,6 +3,7 @@ import os, sys # noqa: E401
 sys.path.insert(1, os.getcwd())
 
 from graphh.generators import generate_line_gr
+from graphh.generators import generate_star_gr
 from graphh.generators import generate_polygon_gr
 
 
@@ -62,10 +63,11 @@ def test_square():
     assert g.node_list() == [a, b, c, d]
 
 
-def test_pentagon():
-    g = generate_polygon_gr(5)
+def test_star():
+    g = generate_star_gr(5)
 
     # Points
+    z = g.add_node(0)
     a = g.add_node('a')
     b = g.add_node('b')
     c = g.add_node('c')
@@ -74,11 +76,11 @@ def test_pentagon():
 
     points = [a, b, c, d, e]
 
-    assert len(g) == len(points)
-    assert g.number_of_nodes() == len(points)
+    assert len(g) == len(points) + 1
+    assert g.number_of_nodes() == len(points) + 1
     assert g.number_of_edges() == len(points)
 
-    assert g.node_list() == points
+    assert g.node_list() == [z, a, b, c, d, e]
 
 
 def test_line():
