@@ -13,7 +13,7 @@ def test_io_cbor():
     """
     g = generate_polygon_gr(3)
 
-    pth = 'test/g.cb'
+    pth = 'tests/g.cb'
     cbor.export_cbor(g, pth)
     assert os.path.isfile(pth)
 
@@ -34,7 +34,7 @@ def test_io_mpack():
     """
     g = generate_polygon_gr(4)
 
-    pth = 'test/g.mp'
+    pth = 'tests/g.mp'
     msgpack.export_msgpack(g, pth)
     assert os.path.isfile(pth)
 
@@ -55,8 +55,8 @@ def test_io_csv():
     """
     g = generate_polygon_gr(4)
 
-    n_pth = 'test/nodes.csv'
-    e_pth = 'test/edges.csv'
+    n_pth = 'tests/nodes.csv'
+    e_pth = 'tests/edges.csv'
     csv.export_csv(g, n_pth, e_pth)
     assert os.path.isfile(n_pth)
     assert os.path.isfile(e_pth)

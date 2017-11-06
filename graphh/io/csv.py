@@ -1,6 +1,8 @@
 """
 Import and export Graph to CSV.
 """
+#- rev: v1 -
+#- hash: 3ZXNOZ -
 
 import time
 from binascii import hexlify, unhexlify

@@ -1,6 +1,10 @@
 
+#- rev: v1 -
+#- hash: L30ZLB -
+
 from .neuro import Neuro
 from .util import hash
+from stones import MemoryStore
 
 
 class FsConvention(Neuro):
@@ -11,7 +15,7 @@ class FsConvention(Neuro):
     def __init__(self, app: str):
         super().__init__()
         self._app = app
-        self._chains = {}
+        self._chains = MemoryStore(encoder='noop')
         # Save app paths
         self._app_root_path = f'/{self._app}/'
         self._app_tables_path = f'/{self._app}/tables/'

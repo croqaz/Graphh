@@ -1,9 +1,16 @@
 
+#- rev: v1 -
+#- hash: 277WHB -
+
 from .graph import Graph
 from .util import hash
+from stones import MemoryStore
 
 
 def create_matcher(part, where):
+    """
+    Create a matcher function
+    """
     # Starts with
     if where == '<':
         return lambda t: t.startswith(part)
@@ -23,16 +30,17 @@ class Neuro(Graph):
 
     def __init__(self):
         super().__init__()
-        self._triples = {}
+        self._triples = MemoryStore(encoder='noop')
 
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """
         Represent instance as Python dictionary.
         """
         out = super().to_dict()
         out.update({'t': dict(self._triples)})
         return out
+
 
     def from_dict(self, data: dict):
         """

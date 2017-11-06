@@ -5,7 +5,7 @@ sys.path.insert(1, os.getcwd())
 from json import load
 from graphh import Neuro
 
-words = load(open('test/data/yes_no.json'))
+words = load(open('tests/data/yes_no.json'))
 
 
 def test_triple():

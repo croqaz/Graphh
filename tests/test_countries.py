@@ -5,7 +5,7 @@ sys.path.insert(1, os.getcwd())
 from json import load
 from graphh import FsConvention
 
-COUNTRIES = load(open('test/data/countries.json'))
+COUNTRIES = load(open('tests/data/countries.json'))
 
 
 def iter_countries():
@@ -46,17 +46,18 @@ def test_countries():
     # print('What are the regions ::', regions)
     assert regions == ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
 
-    subregs = set(n for n in g.query_thing('sub_region'))
+    subregs = set(n for n in g.query_thing('sub_region') if n)
     # print('What are the sub-regions ::', subregs)
-    assert subregs == set(n['subregion'] for n in COUNTRIES)
+    assert subregs == set(n['subregion'] for n in COUNTRIES if n['subregion'])
 
     countries = sorted(g.query_thing('official_name'))
     # print('How many countries ::', len(countries))
     assert len(countries) == len(COUNTRIES)
 
-    capitals = set(g.query_thing('capital'))
-    # print('How many capitals ::', len(capitals))
-    assert capitals == set(n['capital'] for n in COUNTRIES)
+    query_capitals = set(n for n in g.query_thing('capital') if n)
+    orig_capitals = set(n['capital'] for n in COUNTRIES if n['capital'])
+    # print('How many capitals ::', len(query_capitals))
+    assert query_capitals == orig_capitals
 
     countries = set(g.query_thing('official_name', 'U', '<'))
     # print('R countries:', countries)

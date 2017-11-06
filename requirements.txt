@@ -2,19 +2,11 @@
 # Dev lint code
 flake8
 # Dev test code
-pytest
+pytest-cov
+# Dev coverage
+codecov
 
-# UJSON (optional)
-ujson
-
-# CBOR2 (optional)
-cbor2
-
-# Msgpack (optional)
-msgpack-python
-
-# LevelDB (optional)
-plyvel
-
-# LMDB (optional)
-lmdb
+# Stick headers
+git+https://github.com/croqaz/Sticky
+# Persistence
+git+https://github.com/croqaz/Stones

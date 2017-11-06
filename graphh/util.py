@@ -1,5 +1,9 @@
 
+#- rev: v2 -
+#- hash: DZBNB9 -
+
 from hashlib import blake2b
+
 
 def hash(*data):
     """

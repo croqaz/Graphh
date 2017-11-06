@@ -1,4 +1,7 @@
 
+#- rev: v1 -
+#- hash: O85TFF -
+
 import itertools
 from .graph import Graph
 

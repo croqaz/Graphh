@@ -1,9 +1,12 @@
 """
 Import and export Graph to CBOR.
 """
+#- rev: v1 -
+#- hash: WIE62B -
 
 import time
 import cbor2
+
 
 def export_cbor(graph, file_name='graphh.cbor'):
     t1 = time.time()
@@ -11,6 +14,7 @@ def export_cbor(graph, file_name='graphh.cbor'):
         cbor2.dump(graph.to_dict(), fd)
     t2 = time.time()
     print('Exported CBOR in `{:.4f}` seconds.'.format(t2 - t1))
+
 
 def import_cbor(graph, file_name):
     t1 = time.time()

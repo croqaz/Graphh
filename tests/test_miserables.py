@@ -5,7 +5,7 @@ sys.path.insert(1, os.getcwd())
 from json import load
 from graphh import Neuro
 
-data = load(open('test/data/les_miserables.json'))
+data = load(open('tests/data/les_miserables.json'))
 
 
 def test_miserables():

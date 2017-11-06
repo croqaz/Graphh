@@ -1,5 +1,9 @@
 
+#- rev: v1 -
+#- hash: HJRHSN -
+
 from .util import hash
+from stones import MemoryStore
 
 
 class Events:
@@ -35,21 +39,22 @@ class Graph(Events):
     def __init__(self):
         # The nodes are stored as:
         # Key -> Value
-        self._nodes = {}
+        self._nodes = MemoryStore(encoder='noop')
         # Indexed (incoming-adjacency-list, outgoing-adjacency-list)
-        self._adjacency = {}
+        self._adjacency = MemoryStore(encoder='noop')
         # The edges are stored as:
         # Key -> (node_id, node_id)
-        self._edges = {}
+        self._edges = MemoryStore(encoder='noop')
 
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """
         Represent instance as Python dictionaries, ready for serialization.
         """
         return {'n': dict(self._nodes), 'e': dict(self._edges)}
 
-    def from_dict(self, data):
+
+    def from_dict(self, data: dict):
         """
         Load instance from Python dictionary.
         This will OVERWRITE all existing nodes and all existing edges!
@@ -114,7 +119,7 @@ class Graph(Events):
         return key
 
 
-    def add_bi_edge(self, head_id, tail_id):
+    def add_bi_edge(self, head_id: bytes, tail_id: bytes):
         """
         Adds 2 directed edges between head_id and tail_id
         """
@@ -122,26 +127,26 @@ class Graph(Events):
         self.add_edge(tail_id, head_id)
 
 
-    def __contains__(self, node_id):
+    def __contains__(self, node_id: bytes) -> bool:
         """
         Test whether a node is in the graph
         """
         return node_id in self._nodes
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         Returns the number of nodes in the graph
         """
         return len(self._nodes)
 
 
-    def get_node_id(self, node_id):
+    def get_node_id(self, node_id: bytes) -> bytes:
         """
         Returns the node data from the graph
         """
-        return self._nodes.get(node_id, False)
+        return self._nodes.get(node_id)
 
-    def get_node(self, node_data):
+    def get_node(self, node_data: object) -> bytes:
         """
         Returns the node ID from the graph
         """
@@ -151,27 +156,27 @@ class Graph(Events):
         return False
 
 
-    def has_edge_id(self, edge_id):
+    def has_edge_id(self, edge_id: bytes) -> bool:
         """
         Returns True if the edge ID is in the graph
         """
         return edge_id in self._edges
 
-    def get_edge_id(self, edge_id):
+    def get_edge_id(self, edge_id: bytes) -> bytes:
         """
         Returns the edge ID from the graph
         """
-        return self._edges.get(edge_id, False)
+        return self._edges.get(edge_id)
 
 
-    def has_edge(self, head_id, tail_id):
+    def has_edge(self, head_id: bytes, tail_id: bytes) -> bool:
         """
         Returns True if the edge (head_id, tail_id) is in the graph
         """
         key = hash(head_id, tail_id)
         return key in self._edges
 
-    def get_edge(self, head_id, tail_id):
+    def get_edge(self, head_id: bytes, tail_id: bytes) -> bytes:
         """
         Returns the edge (head_id, tail_id) from the graph
         """
@@ -181,13 +186,13 @@ class Graph(Events):
         return False
 
 
-    def number_of_nodes(self):
+    def number_of_nodes(self) -> int:
         """
         Returns the number of nodes
         """
         return len(self._nodes)
 
-    def number_of_edges(self):
+    def number_of_edges(self) -> int:
         """
         Returns the number of edges
         """
@@ -199,7 +204,7 @@ class Graph(Events):
         Iterates over all nodes in the graph
         """
         if values:
-            return self._nodes.items()
+            return iter(self._nodes.items())
         return iter(self._nodes)
 
     def iter_edges(self, values=True):
@@ -207,7 +212,7 @@ class Graph(Events):
         Iterates over all edges in the graph
         """
         if values:
-            return self._edges.items()
+            return iter(self._edges.items())
         return iter(self._edges)
 
 

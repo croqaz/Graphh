@@ -1,9 +1,12 @@
 """
 Import and export Graph to MsgPack.
 """
+#- rev: v1 -
+#- hash: VUYN5X -
 
 import time
 import msgpack
+
 
 def export_msgpack(graph, file_name='graphh.pack'):
     t1 = time.time()
@@ -11,6 +14,7 @@ def export_msgpack(graph, file_name='graphh.pack'):
         fd.write(msgpack.packb(graph.to_dict(), use_bin_type=True))
     t2 = time.time()
     print('Exported MsgPack in `{:.4f}` seconds.'.format(t2 - t1))
+
 
 def import_msgpack(graph, file_name):
     t1 = time.time()

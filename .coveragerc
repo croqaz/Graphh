@@ -1,0 +1,6 @@
+[run]
+branch = True
+omit = graphh/__version__.py
+
+[report]
+ignore_errors = True
