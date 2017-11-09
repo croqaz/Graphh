@@ -16,7 +16,7 @@ coverage:
 	${ENV}/pytest --cov-report term --cov=graphh tests/
 
 test:
-	${ENV}/pytest -ra --capture=no --verbose tests/
+	${ENV}/pytest -ra --capture=no -vv tests/
 
 icky:
 	${ENV}/python -m sticky.cli -s graphh/

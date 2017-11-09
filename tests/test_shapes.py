@@ -35,6 +35,9 @@ def test_triangle():
 
     assert g.node_list() == [a, b, c]
 
+    assert g.out_degree(a) == 1
+    assert g.all_degree(a) == 2
+
 
 def test_square():
     g = generate_polygon_gr(4)
@@ -62,6 +65,9 @@ def test_square():
 
     assert g.node_list() == [a, b, c, d]
 
+    assert g.out_degree(a) == 1
+    assert g.all_degree(a) == 2
+
 
 def test_star():
     g = generate_star_gr(5)
@@ -75,6 +81,8 @@ def test_star():
     e = g.add_node('e')
 
     points = [a, b, c, d, e]
+
+    assert g.out_degree(z) == 5
 
     assert len(g) == len(points) + 1
     assert g.number_of_nodes() == len(points) + 1

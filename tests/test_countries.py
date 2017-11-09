@@ -35,6 +35,12 @@ def test_countries():
     """
     Countries and borders
     https://github.com/mledoze/countries
+
+    Need to have:
+    * query country by continent, by capital, by currency
+    * find top 3 largest and smallest countries
+    * find top 3 countries with the most neighbors
+    * what are the top 3 most popular currencies (by country)
     """
     g = FsConvention('Geography')
     g.create_table('countries')
@@ -60,14 +66,19 @@ def test_countries():
     assert query_capitals == orig_capitals
 
     countries = set(g.query_thing('official_name', 'U', '<'))
-    # print('R countries:', countries)
+    # print('U... countries:', countries)
     assert countries == set(n['name']['official'] for n in COUNTRIES
         if n['name']['official'][0] == 'U')
 
     countries = set(g.query_thing('official_name', 'a', '>'))
-    # print('A countries:', countries)
+    # print('...a countries:', countries)
     assert countries == set(n['name']['official'] for n in COUNTRIES
         if n['name']['official'][-1] == 'a')
+
+    count_africa = g.query_docs('countries', {'region': 'Africa'}, {b'common_name'})
+    # print('What are the countries in Africa ::', count_africa)
+    orig_africa = (n['name']['common'] for n in COUNTRIES if n.get('region') == 'Africa')
+    assert sorted(n[b'common_name'] for n in count_africa) == sorted(orig_africa)
 
     info = g.get_doc('countries', 'RO')
     # print('What info about Romania ::', info)

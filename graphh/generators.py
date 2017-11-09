@@ -1,12 +1,12 @@
 
-#- rev: v2 -
-#- hash: UDQS3L -
+#- rev: v1 -
+#- hash: SO6IVH -
 
 import itertools
 from .graph import Graph
 
 
-def number_to_letter(nr):
+def number_to_letter(nr: int) -> str:
     # `Number` must be a positive integer
     return chr(nr + 96)
 

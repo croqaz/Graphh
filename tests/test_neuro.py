@@ -55,12 +55,16 @@ def test_family():
     # Who is loved by someone
     assert sorted(g.query_thing('loves')) == ['boy', 'dad', 'girl', 'lazy cat', 'mom']
 
-    # Relations between mom & dad
-    assert g.query_triple('mom', '?', 'dad') == [('mom', 'loves', 'dad')]
-    assert g.query_triple('dad', '?', 'mom') == [('dad', 'loves', 'mom')]
-
-    # Who loves mom
-    assert g.query_triple('?', 'loves', 'mom') == [('dad', 'loves', 'mom')]
     # Who needs mom
-    assert g.query_triple('?', 'needs', 'mom') == \
-        [('girl', 'needs', 'mom'), ('boy', 'needs', 'mom'), ('lazy cat', 'needs', 'mom')]
+    assert sorted(g.query_pt_s('needs', 'mom')) ==  ['boy', 'girl', 'lazy cat']
+    # Who needs dad
+    assert sorted(g.query_pt_s('needs', 'dad')) == ['boy', 'girl']
+
+    # Girl needs what == Boy needs what
+    assert sorted(g.query_sp_t('girl', 'needs')) == sorted(g.query_sp_t('boy', 'needs'))
+
+    assert sorted(g.query_triple('?', 'loves', 'mom')) == ['dad']
+    assert sorted(g.query_triple('?', 'needs', 'mom')) == ['boy', 'girl', 'lazy cat']
+
+    assert sorted(g.query_triple('mom', 'loves', '?')) == ['dad', 'girl', 'lazy cat']
+    assert sorted(g.query_triple('dad', 'loves', '?')) == ['boy', 'mom']

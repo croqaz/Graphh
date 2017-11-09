@@ -1,15 +1,17 @@
 
-#- rev: v2 -
-#- hash: DZBNB9 -
+#- rev: v1 -
+#- hash: YAERSA -
 
 from hashlib import blake2b
+
+HASH_SIZE = 32
 
 
 def hash(*data):
     """
     Blake2 64-bit hashing, 32 bytes output size.
     """
-    key = blake2b(digest_size=32)
+    key = blake2b(digest_size=HASH_SIZE)
     for d in data:
         if d is None or d == 'None' or d == 'NULL':
             d = b'null'

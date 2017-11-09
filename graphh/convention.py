@@ -1,6 +1,6 @@
 
-#- rev: v1 -
-#- hash: L30ZLB -
+#- rev: v2 -
+#- hash: VXGLBJ -
 
 from .neuro import Neuro
 from .util import hash
@@ -66,7 +66,7 @@ class FsConvention(Neuro):
         self.add_edge(tb_key, tb_meta)
 
 
-    def create_doc(self, table: str, uid: str, data: dict):
+    def create_doc(self, table: str, uid: str, data: dict) -> bytes:
         """
         Insert a new document in a table.
         The UID must be unique in the table, to avoid collision.
@@ -97,12 +97,40 @@ class FsConvention(Neuro):
         return key
 
 
-    def get_doc(self, table: str, uid: str):
+    def get_doc_id(self, doc_uid: str, fields=set()) -> dict:
         """
         Return a specific document UID from a table.
         """
-        doc_uid = f'{self._app_tables_path}{table}/docs/{uid}/'
+        d_key = hash(doc_uid)
         doc = {}
-        for subject, predicate, thing in self.query_triple(doc_uid, '?', '?'):
-            doc[predicate] = thing
+        for next_id in self.iter_next_nodes(d_key):
+            pred = self.get_node_id(next_id)
+            if fields and pred not in fields:
+                continue
+            thing = set(self.query_sp_t(doc_uid, pred))
+            if len(thing) == 1:
+                thing = thing.pop()
+            doc[pred] = thing
         return doc
+
+
+    def get_doc(self, table: str, uid: str, fields=set()) -> dict:
+        """
+        Return a specific document UID from a table.
+        """
+        return self.get_doc_id(f'{self._app_tables_path}{table}/docs/{uid}/', fields)
+
+
+    def query_docs(self, table: str, query: dict, fields=set()):
+        """
+        Find all documents that match, from a table.
+        """
+        docs = []
+        for s, p in query.items():
+            for doc_uid in self.query_triple('?', s, p):
+                # If the document is not from this table
+                if doc_uid.split('/')[3] != table:
+                    continue
+                # Fetch the complete document
+                docs.append(self.get_doc_id(doc_uid, fields))
+        return docs

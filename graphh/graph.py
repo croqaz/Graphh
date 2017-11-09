@@ -1,6 +1,6 @@
 
-#- rev: v1 -
-#- hash: HJRHSN -
+#- rev: v2 -
+#- hash: HJIUQG -
 
 from .util import hash
 from stones import MemoryStore
@@ -38,13 +38,17 @@ class Graph(Events):
 
     def __init__(self):
         # The nodes are stored as:
-        # Key -> Value
+        # Node key -> Value
         self._nodes = MemoryStore(encoder='noop')
         # Indexed (incoming-adjacency-list, outgoing-adjacency-list)
         self._adjacency = MemoryStore(encoder='noop')
         # The edges are stored as:
-        # Key -> (node_id, node_id)
+        # Edge key -> (node_id, node_id)
         self._edges = MemoryStore(encoder='noop')
+
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(nodes:{len(self._nodes)}, edges:{len(self._edges)})'
 
 
     def to_dict(self) -> dict:
@@ -218,13 +222,15 @@ class Graph(Events):
 
     def node_list(self) -> list:
         """
-        Return a list with all node ids in the graph
+        Return a list with all node ids in the graph.
+        Pretty much useless.
         """
         return list(self._nodes.keys())
 
     def edge_list(self) -> list:
         """
-        Return a list with all edge ids in the graph
+        Return a list with all edge ids in the graph.
+        Pretty much useless.
         """
         return list(self._edges.keys())
 
@@ -242,17 +248,32 @@ class Graph(Events):
         return self._edges[edge_id][1]
 
 
+    def iter_next_nodes(self, node_id: bytes):
+        """
+        Iterate outgoing nodes
+        """
+        for edge_id in self.out_edges(node_id):
+            yield self.edge_tail(edge_id)
+
+    def iter_prev_nodes(self, node_id: bytes):
+        """
+        Iterate incoming nodes
+        """
+        for edge_id in self.inc_edges(node_id):
+            yield self.edge_head(edge_id)
+
+
     def out_edges(self, node_id: bytes) -> set:
         """
         Returns a set with the outgoing edges
         """
-        return set(self._adjacency[node_id][1])
+        return self._adjacency.get(node_id, (set(), set()))[1]
 
     def inc_edges(self, node_id: bytes) -> set:
         """
         Returns a set with the incoming edges
         """
-        return set(self._adjacency[node_id][0])
+        return self._adjacency.get(node_id, (set(), set()))[0]
 
     def all_edges(self, node_id: bytes) -> set:
         """
@@ -265,15 +286,13 @@ class Graph(Events):
         """
         Returns the number of outgoing edges
         """
-        out_edges = self._adjacency.get(node_id, (set(), set()))[1]
-        return len(out_edges)
+        return len(self.out_edges(node_id))
 
     def inc_degree(self, node_id: bytes) -> int:
         """
         Returns the number of incoming edges
         """
-        inc_edges = self._adjacency.get(node_id, (set(), set()))[0]
-        return len(inc_edges)
+        return len(self.inc_edges(node_id))
 
     def all_degree(self, node_id: bytes) -> int:
         """
